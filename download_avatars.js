@@ -40,6 +40,8 @@ getRepoContributors(owner, repo, function(err, result){
     downloadImageByURL(loginAvatarUrl[login], './avatars/' + login + '.jpg');
   }
 });
+} else {
+  console.log('please enter the owner and in the cmd line')
 }
 
 
