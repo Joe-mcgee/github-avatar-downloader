@@ -6,6 +6,14 @@ const fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+    .on('error', function(err) {
+      console.log(err);
+    })
+    .pipe(fs.createWriteStream(filePath));
+
+}
 
 function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
@@ -22,39 +30,22 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
-
-if (typeof owner != 'undefined' && typeof repo != 'undefined') {
-getRepoContributors(owner, repo, function(err, result){
-  let parsed = JSON.parse(result);
-  let loginAvatarUrl = {};
-  parsed.forEach(function(contributor) {
+if (typeof owner !== 'undefined' && typeof repo !== 'undefined') {
+  getRepoContributors(owner, repo, function(err, result){
+    let parsed = JSON.parse(result);
+    let loginAvatarUrl = {};
+    parsed.forEach(function(contributor) {
       loginAvatarUrl[contributor['login']] = contributor['avatar_url'];
     });
-
-  for (login in loginAvatarUrl) {
-    /*try {
-      fs.writeFileSync('/avatars/' + login + '.jpg')
-    } catch (e) {
-      console.log('cannot write file', e)
-    }*/
-    downloadImageByURL(loginAvatarUrl[login], './avatars/' + login + '.jpg');
-  }
-});
+    for (login in loginAvatarUrl) {
+      downloadImageByURL(loginAvatarUrl[login], './avatars/' + login + '.jpg');
+    }
+  });
 } else {
-  console.log('please enter the owner and in the cmd line')
+  console.log('please enter the owner and in the cmd line');
 }
 
 
-function downloadImageByURL(url, filePath) {
-  request.get(url)
-    .on('error', function(err) {
-      console.log(err);
-    })
-    .on('response', function(response) {
 
-    })
-    .pipe(fs.createWriteStream(filePath));
-
-}
 
 
