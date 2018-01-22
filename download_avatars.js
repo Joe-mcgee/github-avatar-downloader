@@ -25,7 +25,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
   };
   request(options, function(err, res, body) {
-
+    //call back function starting at line 34
     cb(err, body);
   });
 }
