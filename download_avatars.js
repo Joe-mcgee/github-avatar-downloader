@@ -1,3 +1,5 @@
+let owner = process.argv[2];
+let repo = process.argv[3];
 const request = require('request');
 const secrets = require('./secrets.js');
 const fs = require('fs');
@@ -21,7 +23,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 
-getRepoContributors('jquery', 'jquery', function(err, result){
+getRepoContributors(owner, repo, function(err, result){
   let parsed = JSON.parse(result);
   let loginAvatarUrl = {};
   parsed.forEach(function(contributor) {
