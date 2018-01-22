@@ -31,7 +31,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 // if input is defined, execute function
 if (typeof owner !== 'undefined' && typeof repo !== 'undefined') {
-  getRepoContributors(owner, repo, function(err, result){
+  getRepoContributors(owner, repo, function(err, result) {
     let parsed = JSON.parse(result);
     let loginAvatarUrl = {};
     //cretes {'login name': 'avatar_url'} object
@@ -45,8 +45,3 @@ if (typeof owner !== 'undefined' && typeof repo !== 'undefined') {
 } else {
   console.log('please enter the owner and in the cmd line');
 }
-
-
-
-
-
