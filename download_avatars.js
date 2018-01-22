@@ -23,6 +23,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 
+if (typeof owner != 'undefined' && typeof repo != 'undefined') {
 getRepoContributors(owner, repo, function(err, result){
   let parsed = JSON.parse(result);
   let loginAvatarUrl = {};
@@ -39,6 +40,7 @@ getRepoContributors(owner, repo, function(err, result){
     downloadImageByURL(loginAvatarUrl[login], './avatars/' + login + '.jpg');
   }
 });
+}
 
 
 function downloadImageByURL(url, filePath) {
