@@ -1,8 +1,21 @@
 let owner = process.argv[2];
 let repo = process.argv[3];
 const request = require('request');
-const secrets = require('./secrets.js');
 const fs = require('fs');
+if (!fs.existsSync('./secrets.js')) {
+  fs.writeFileSync('./secrets.js')
+}
+const secrets = require('./secrets.js')
+
+
+function envCheck() {
+  try {
+    return secrets.GITHUB_TOKEN;
+  } catch (e) {
+    console.log('Github API key missing, larger repos may require a Token');
+    return '';
+  }
+}
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -39,7 +52,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      'Authorization': secrets.GITHUB_TOKEN
+      'Authorization': envCheck()
     }
 
   };
