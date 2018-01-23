@@ -3,7 +3,8 @@ let repo = process.argv[3];
 const request = require('request');
 const fs = require('fs');
 if (!fs.existsSync('./secrets.js')) {
-  fs.writeFileSync('./secrets.js')
+  fs.writeFileSync('./secrets.js');
+  console.log('Secrets file created, make sure to add a Github API token to it if you have trouble dowloading large repos ')
 }
 const secrets = require('./secrets.js')
 
@@ -52,7 +53,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      'Authorization': envCheck()
+      'Authorization': 'ccaf1b348bc23b16406d82c850cf7773984511fe' /*envCheck()*/
     }
 
   };
@@ -60,6 +61,10 @@ function getRepoContributors(repoOwner, repoName, cb) {
     cb(err, body);
   });
 }
+
+module.exports.getRepoContributors = getRepoContributors;
+module.exports.envCheck = envCheck;
+
 // if input is defined, execute function
 if (typeof owner !== 'undefined' && typeof repo !== 'undefined') {
   getRepoContributors(owner, repo, handleFilter);
