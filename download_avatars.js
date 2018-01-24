@@ -24,9 +24,9 @@ console.log('Welcome to the GitHub Avatar Downloader!');
 
 //writes jpgs to an avatars folder
 function downloadImageByURL(url, filePath) {
-  if (!fs.existsSync('./avatars')) {
+  /*if (!fs.existsSync('./avatars')) {
     fs.mkdirSync('./avatars');
-  }
+  }*/
 
   request.get(url)
     .on('error', function(err) {
@@ -61,9 +61,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
     cb(err, body);
   });
 }
-
-module.exports.getRepoContributors = getRepoContributors;
-module.exports.envCheck = envCheck;
 
 // if input is defined, execute function
 if (typeof owner !== 'undefined' && typeof repo !== 'undefined') {
