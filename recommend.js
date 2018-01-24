@@ -19,7 +19,7 @@ function authorAndRepo(err, result) {
   }
 
 
-async function getStarredUrls(URL, cb, motherArray) {
+async function getStarredUrls(URL, cb, motherArray, goldObj) {
   var options = {
     url: URL,
     headers: {
@@ -33,10 +33,43 @@ async function getStarredUrls(URL, cb, motherArray) {
     var newBody = JSON.parse(body);
     var  output = cb(err, newBody);
     motherArray.push(output)
-    console.log(motherArray[motherArray.length - 1])
-    return output
+    /*console.log(motherArray)*/
+    motherArray.forEach(function (outputs) {
+      for (name in outputs) {
+        if (goldObj[name + ' / ' + outputs[name]]) {
+          goldObj[name + ' / ' + outputs[name]] += 1
+        } else {
+          goldObj[name + ' / ' + outputs[name]] = 1
+
+      }
+    }
+    motherArray.shift(outputs)
+
+    /*console.log(motherArray)*/
+    })
+    let sorted = []
+    for (gitRepo in goldObj) {
+      sorted.push([goldObj[gitRepo], gitRepo])
+    }
+    sorted.sort((a, b) => { return b[0]-a[0]})
+    sorted.length = 5;
+    sorted.forEach((top) => {
+      let star = top[0];
+      let newstar = '[ '+star+' stars ]'
+      top[0] = newstar
+      let oldTop = top[1];
+      let newTop = oldTop
+      top[1] = newTop
+    })
 
 
+
+    let goldJson = JSON.stringify(sorted)
+    fs.writeFile('starred-gits.txt', goldJson, (err) => {
+      if(err) throw err;
+    })
+
+    return goldObj
   });
   return newOut
 }
@@ -50,11 +83,13 @@ async function starFilter(err, result) {
   for (var i = 0; i < parsed.length; i++) {
     loginStarredUrl[parsed[i]['login']] = parsed[i]['starred_url'].replace(/{\/owner}{\/repo}/g, '');
   }
-  const goldArray = [];
+  const outputObject = {}
+  let goldArray = [];
   //console.log('urls obj', loginStarredUrl)
   for (var login in loginStarredUrl) {
-    var list = await getStarredUrls(loginStarredUrl[login], authorAndRepo, goldArray);
+    var list = await getStarredUrls(loginStarredUrl[login], authorAndRepo, goldArray, outputObject);
   }
+  console.log(goldArray)
   /*console.log(goldArray)*/
 }
 

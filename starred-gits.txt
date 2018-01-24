@@ -1,0 +1,1 @@
+[["[ 3 stars ]","jquery / sizzle"],["[ 2 stars ]","yandex / gixy"],["[ 2 stars ]","qunitjs / qunit"],["[ 2 stars ]","DmitryBaranovskiy / raphael"],["[ 2 stars ]","dherman / esprit"]]
